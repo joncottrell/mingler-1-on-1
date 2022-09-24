@@ -6,9 +6,9 @@ A library to help you create rounds of 1:1's until everyone in a group has met.
 
 ### Installation
 
-`npm install --save-dev @joncottrell/mingler-1-on-1`
+`npm install --save-dev mingler-1-on-1`
 or
-`yarn add --dev @joncottrell/mingler-1-on-1`
+`yarn add --dev mingler-1-on-1`
 
 ### Getting all meeting rounds
 
