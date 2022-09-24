@@ -8,12 +8,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "FIXME: add git repo"
+    "url": "https://github.com/joncottrell/mingler-1-on-1"
   },
   "keyword": [
     "meetings",
     "scheduling"
   ],
+  "files": [ "lib/**/*" ],
   "author": "Jonathan Cottrell <jonathan@bravecottrell.com>",
   "license": "MIT",
   "dependencies": {},
