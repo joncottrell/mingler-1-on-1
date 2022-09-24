@@ -1,55 +1,38 @@
 import { combinations } from "combinatorial-generators";
 
-type Person =
-  | { name: string; email: string }
-  | { name: string }
-  | { email: string };
+type Person = {
+  name: string;
+  email: string;
+}
 
-type Meeting = [Person, Person];
 
-export const meetingRounds = (input: Person[] | number) => {
-  const people = typeof input === "number" ? randomPeople(input) : input;
+export function rounds<T extends string[] | number>(input: T): string[][][] {
+  if (typeof input === "number" && input === 0) {
+    return [];
+  } else if (Array.isArray(input) && input.length === 0) {
+    return []
+  }
+  const people = typeof input === "number" ? randomNames(input) : input as string[];
   const peopleIndices = shuffled(people.map((_, i) => i));
-  const meetings = Array.from(combinations(peopleIndices, 2)).map(
-    (combination) => combination.map((i) => people[i])
-  ) as Meeting[];
-  const rounds: Meeting[][] = [];
-  while (meetings.length > 0) {
-    const round: Meeting[] = [];
-    for (let i = meetings.length - 1; i >= 0; --i) {
-      if (!roundContainsAPerson(round, meetings[i])) {
-        round.push(meetings[i]);
-        meetings.splice(i, 1);
+  const combos = Array.from(combinations(peopleIndices, 2));
+  const rounds: string[][][] = [];
+  while (combos.length > 0) {
+    const round: number[][] = [];
+    for (let i = combos.length - 1; i >= 0; --i) {
+      const found = round.some((meetings) =>
+        meetings.some((person) => combos[i].includes(person))
+      );
+      if (!found) {
+        round.push(combos[i]);
+        combos.splice(i, 1);
       }
     }
-    rounds.push(round);
+
+    const result = round.map((meeting) => meeting.map((index) => people[index]));
+    rounds.push(result);
   }
   return rounds;
 };
-
-const roundContainsAPerson = (
-  round: Meeting[],
-  [person1, person2]: Meeting
-) => {
-  return round.some(
-    (meeting) =>
-      meetingContainsPerson(meeting, person1) ||
-      meetingContainsPerson(meeting, person2)
-  );
-};
-
-const meetingContainsPerson = (meeting: Meeting, person: Person) => {
-  return meeting.some((p) => {
-    const nameMatch =
-      "name" in p && "name" in person ? p.name === person.name : true;
-    const emailmatch =
-      "email" in p && "email" in person ? p.email === person.email : true;
-    return nameMatch && emailmatch;
-  });
-};
-
-const randomPeople = (count: number) =>
-  randomNames(count).map((name) => ({ name }));
 
 function shuffled<T>(array: T[]): T[] {
   const copy = array.slice();

@@ -2,9 +2,15 @@
   "name": "mingler-1-on-1",
   "version": "1.0.0",
   "description": "Simple library for scheduling some 1-on-1 meetings",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "build": "yarn tsc",
-    "test": "yarn jest"
+    "test": "yarn jest",
+    "prepare": "yarn build",
+    "prepublishOnly": "npm test",
+    "version": "git add -A src",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
@@ -14,7 +20,9 @@
     "meetings",
     "scheduling"
   ],
-  "files": [ "lib/**/*" ],
+  "files": [
+    "lib/**/*"
+  ],
   "author": "Jonathan Cottrell <jonathan@bravecottrell.com>",
   "license": "MIT",
   "dependencies": {},
